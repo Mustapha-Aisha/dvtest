@@ -44,7 +44,7 @@ Create a `.env` file at the root of the project with the following:
 DATABASE_URL=postgresql://user:password@localhost:5432/db_name
 PORT=3000
 NODE_ENV=development
-```
+```npm
 
 > You can copy the template file using:  
 > `cp .env.example .env`

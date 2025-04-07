@@ -69,8 +69,6 @@ describe('AuthService', () => {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      
-      // Mock bcrypt functions
 
       // Mock bcrypt functions
       (bcrypt.genSaltSync as jest.MockedFunction<typeof bcrypt.genSaltSync>).mockReturnValue(salt);
