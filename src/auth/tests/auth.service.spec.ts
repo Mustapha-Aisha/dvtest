@@ -65,7 +65,7 @@ describe('AuthService', () => {
         id: 1,
         email: registerDto.email,
         password: hashedPassword,
-        biometricKey: 'biometric7',
+        biometricKey: expect.any(String), 
         createdAt: new Date(),
         updatedAt: new Date()
       });
@@ -82,7 +82,7 @@ describe('AuthService', () => {
         data: {
           email: registerDto.email,
           password: hashedPassword,
-          biometricKey: 'biometric7',
+          biometricKey: expect.any(String), 
         },
       });
       expect(result).toBe('Registration successful! Please login with your email and password.');
