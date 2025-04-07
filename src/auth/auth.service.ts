@@ -3,24 +3,22 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
 import { AuthDto } from './dto/auth.dto';
-import { BaseResponse } from 'src/util/BaseResponse.entity';
+
 
 @Injectable()
 export class AuthService {
   constructor(private readonly prisma: PrismaService, private jwtService: JwtService) { }
 
-  async login(email: string, password: string): Promise<BaseResponse> {
+  async login(email: string, password: string): Promise<string> {
     try {
       const user = await this.prisma.user.findUnique({ where: { email } });
       if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new UnauthorizedException("Invalid email or password");
       }
       const payload = { email: user.email, sub: user.id };
-      return {
-        status: "success",
-        message: "Login successful",
-        data: { accessToken: this.jwtService.sign(payload) }
-      };
+      const accessToken =  this.jwtService.sign(payload) 
+      return accessToken ;
+     
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw error;
@@ -31,7 +29,7 @@ export class AuthService {
     }
   }
 
-  async register({ email, password }: AuthDto): Promise<BaseResponse> {
+  async register({ email, password }: AuthDto): Promise<String> {
     try {
       const existingUser = await this.prisma.user.findUnique({
         where: { email },
@@ -40,25 +38,16 @@ export class AuthService {
         throw new ConflictException("Email is already registered");
       const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
       await this.prisma.user.create({
-        data: { email, password: hashedPassword, biometricKey: 'biometric' },
+        data: { email, password: hashedPassword, biometricKey: 'biometric7' },
       });
 
-      return {
-        status: "success",
-        message:
-          "Registration successful! Please login with your email and password.",
-      };
+      return "Registration successful! Please login with your email and password.";
     } catch (error) {
-      if (error instanceof ConflictException) {
         throw error;
-      } else {
-        throw new ConflictException("An error occurred during registration");
-
-      }
     }
   }
 
-  async biometricLogin(biometricKey: string) {
+  async biometricLogin(biometricKey: string): Promise<string> {
     try {
       const user = await this.prisma.user.findUnique({
         where: { biometricKey },
@@ -66,7 +55,9 @@ export class AuthService {
       if (!user) {
         throw new Error('User not found');
       }
-      return user;
+      const payload = { email: user.email, sub: user.id };
+      const accessToken =  this.jwtService.sign(payload) 
+      return accessToken;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw error;

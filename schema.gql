@@ -1,0 +1,22 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  ping: String!
+}
+
+type Mutation {
+  register(input: AuthDto!): String!
+  login(input: AuthDto!): String!
+  biometricLogin(input: BiometricLoginDto!): String!
+}
+
+input AuthDto {
+  email: String!
+  password: String!
+}
+
+input BiometricLoginDto {
+  biometricKey: String!
+}
