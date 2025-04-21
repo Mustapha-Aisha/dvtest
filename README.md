@@ -1,5 +1,5 @@
 # 🚀 Project Name
-
+This project was created as a coding exercise to demonstrate my understanding of NestJS, GraphQL, and authentication principles.
 A scalable backend application built with **NestJS**, **GraphQL**, and **Prisma**.
 
 ---
